@@ -10,6 +10,8 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
+import net.luis.utils.logging.LoggerConfiguration;
+import net.luis.utils.logging.LoggingUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +21,10 @@ import net.luis.biome.noise.color.NoiseColors;
 public class ImageRun {
 	
 	// TODO: add windyness
+	
+	static {
+		LoggingUtils.initialize(LoggerConfiguration.DEFAULT);
+	}
 	
 	public static final DateFormat FORMAT = new SimpleDateFormat("mm:ss:SSS");
 	public static final Logger LOGGER = LogManager.getLogger();
