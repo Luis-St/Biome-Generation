@@ -1,24 +1,42 @@
 plugins {
-	id "java-library"
 	id "java"
 	id "org.openjfx.javafxplugin" version "0.0.10"
 }
 
 repositories {
-	jcenter()
 	mavenCentral()
+	maven {
+		url uri("${projectDir}/maven/repositories")
+	}
 }
 
 javafx {
-	version = "17"
+	version = "${JavaFx}"
 	modules = [ "javafx.controls" ]
 }
 
 dependencies {
-	implementation "com.google.guava:guava:31.0.1-jre"
-	implementation "it.unimi.dsi:fastutil:8.5.6"
-	implementation group: "org.apache.logging.log4j", name: "log4j-api", version: "2.14.1"
-	implementation group: "org.apache.logging.log4j", name: "log4j-core", version: "2.14.1"
+	// Local
+	implementation "org.controlsfx:ControlsFx:${ControlsFx}" // Fx
+	implementation "net.luis:LUtils:${LUtils}" // Utility
+	implementation "net.luis:FxUtils:${FxUtils}" // Fx Utility
+	// Google
+	implementation "com.google.guava:guava:${GoogleGuava}" // Utility
+	// Apache
+	implementation "org.apache.logging.log4j:log4j-api:${Log4jAPI}" // Logging
+	implementation "org.apache.logging.log4j:log4j-core:${Log4jCore}" // Logging
+	implementation "commons-io:commons-io:${ApacheIO}" // IO
+	// Other
+	implementation "net.sf.jopt-simple:jopt-simple:${JoptSimple}" // Startup
+	implementation "org.jetbrains:annotations:${JetBrainsAnnotations}" // Annotations
+	implementation "it.unimi.dsi:fastutil:${UnimiFastutil}"
+	// Test
+	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
+}
+
+test {
+	useJUnitPlatform()
 }
 
 tasks.register("debugRun", JavaExec) {
@@ -48,4 +66,12 @@ tasks.register("imageRun", JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 	args("10000")
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = "UTF-8"
+}
+
+jar {
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
