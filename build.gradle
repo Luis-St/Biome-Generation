@@ -12,7 +12,7 @@ repositories {
 
 javafx {
 	version = "${JavaFx}"
-	modules = [ "javafx.controls" ]
+	modules = ["javafx.controls"]
 }
 
 dependencies {
@@ -29,7 +29,7 @@ dependencies {
 	// Other
 	implementation "net.sf.jopt-simple:jopt-simple:${JoptSimple}" // Startup
 	implementation "org.jetbrains:annotations:${JetBrainsAnnotations}" // Annotations
-	implementation "it.unimi.dsi:fastutil:${UnimiFastutil}"
+	implementation "it.unimi.dsi:fastutil:${UnimiFastutil}" // Utility
 	// Test
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
 	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
@@ -41,28 +41,28 @@ test {
 
 tasks.register("debugRun", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.biome.run.DebugRun")
+	getMainClass().set("net.luis.run.DebugRun")
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
 tasks.register("fxRun", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.biome.run.FxRun")
+	getMainClass().set("net.luis.run.FxRun")
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
 tasks.register("testRun", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.biome.run.TestRun")
+	getMainClass().set("net.luis.run.TestRun")
 	classpath = sourceSets.main.runtimeClasspath
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
 tasks.register("imageRun", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.biome.run.ImageRun")
+	getMainClass().set("net.luis.run.ImageRun")
 	classpath = sourceSets.main.runtimeClasspath
 	args("10000")
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
