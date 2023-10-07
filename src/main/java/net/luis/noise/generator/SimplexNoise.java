@@ -5,10 +5,10 @@ import net.luis.util.random.RandomSource;
 
 public class SimplexNoise implements Noise {
 	
-	private static final double SQRT_3 = Math.sqrt(3.0);
+	private static final double SQRT_3 = 1.7320508075688772;
 	private static final double F2 = 0.5 * (SQRT_3 - 1.0);
 	private static final double G2 = (3.0 - SQRT_3) / 6.0;
-	protected static final int[][] GRADIENT = new int[][] {
+	protected static final int[][] GRADIENT = {
 		{1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}, {1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1},
 		{0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}, {1, 1, 0}, {0, -1, 1}, {-1, 1, 0}, {0, -1, -1}
 	};
@@ -31,7 +31,7 @@ public class SimplexNoise implements Noise {
 	}
 	
 	protected static double dot(int[] values, double x, double y, double z) {
-		return (double) values[0] * x + (double) values[1] * y + (double) values[2] * z;
+		return values[0] * x + values[1] * y + values[2] * z;
 	}
 	
 	@Override
@@ -39,9 +39,9 @@ public class SimplexNoise implements Noise {
 		double d0 = (x + z) * F2;
 		int i = (int) Math.floor(x + d0);
 		int j = (int) Math.floor(z + d0);
-		double d1 = (double) (i + j) * G2;
-		double d2 = (double) i - d1;
-		double d3 = (double) j - d1;
+		double d1 = (i + j) * G2;
+		double d2 = i - d1;
+		double d3 = j - d1;
 		double d4 = x - d2;
 		double d5 = z - d3;
 		int k;
@@ -53,8 +53,8 @@ public class SimplexNoise implements Noise {
 			k = 0;
 			l = 1;
 		}
-		double d6 = d4 - (double) k + G2;
-		double d7 = d5 - (double) l + G2;
+		double d6 = d4 - k + G2;
+		double d7 = d5 - l + G2;
 		double d8 = d4 - 1.0 + 2.0 * G2;
 		double d9 = d5 - 1.0 + 2.0 * G2;
 		int i1 = i & 255;
@@ -74,10 +74,10 @@ public class SimplexNoise implements Noise {
 		int i = (int) Math.floor(x + d1);
 		int j = (int) Math.floor(y + d1);
 		int k = (int) Math.floor(z + d1);
-		double d3 = (double) (i + j + k) * 0.16666666666666666D;
-		double d4 = (double) i - d3;
-		double d5 = (double) j - d3;
-		double d6 = (double) k - d3;
+		double d3 = (i + j + k) * 0.16666666666666666D;
+		double d4 = i - d3;
+		double d5 = j - d3;
+		double d6 = k - d3;
 		double d7 = x - d4;
 		double d8 = y - d5;
 		double d9 = z - d6;
@@ -132,12 +132,12 @@ public class SimplexNoise implements Noise {
 			l1 = 1;
 			i2 = 0;
 		}
-		double d10 = d7 - (double) l + 0.16666666666666666;
-		double d11 = d8 - (double) i1 + 0.16666666666666666;
-		double d12 = d9 - (double) j1 + 0.16666666666666666;
-		double d13 = d7 - (double) k1 + 0.3333333333333333;
-		double d14 = d8 - (double) l1 + 0.3333333333333333;
-		double d15 = d9 - (double) i2 + 0.3333333333333333;
+		double d10 = d7 - l + 0.16666666666666666;
+		double d11 = d8 - i1 + 0.16666666666666666;
+		double d12 = d9 - j1 + 0.16666666666666666;
+		double d13 = d7 - k1 + 0.3333333333333333;
+		double d14 = d8 - l1 + 0.3333333333333333;
+		double d15 = d9 - i2 + 0.3333333333333333;
 		double d16 = d7 - 1.0 + 0.5;
 		double d17 = d8 - 1.0 + 0.5;
 		double d18 = d9 - 1.0 + 0.5;

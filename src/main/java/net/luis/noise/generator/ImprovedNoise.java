@@ -47,7 +47,9 @@ public final class ImprovedNoise implements Noise {
 		double d4 = d1 - (double) j;
 		double d5 = d2 - (double) k;
 		double d6;
-		if (d != 0.0) {
+		if (d == 0.0) {
+			d6 = 0.0;
+		} else {
 			double d7;
 			if (f >= 0.0 && f < d4) {
 				d7 = f;
@@ -55,8 +57,6 @@ public final class ImprovedNoise implements Noise {
 				d7 = d4;
 			}
 			d6 = Math.floor(d7 / d + 1.0E-7) * d;
-		} else {
-			d6 = 0.0;
 		}
 		return this.sampleAndLerp(i, j, k, d3, d4 - d6, d5, d4);
 	}
@@ -104,11 +104,11 @@ public final class ImprovedNoise implements Noise {
 	}
 	
 	private double lerp2(double inner, double outer, double firstMin, double firstMax, double secondMin, double secondMax) {
-		return lerp(outer, lerp(inner, firstMin, firstMax), lerp(inner, secondMin, secondMax));
+		return this.lerp(outer, this.lerp(inner, firstMin, firstMax), this.lerp(inner, secondMin, secondMax));
 	}
 	
 	private double lerp3(double firstInner, double secondInner, double outerValue, double ffMin, double ffMax, double fsMin, double fsMax, double sfMin, double sfMax, double ssMin, double ssMax) {
-		return lerp(outerValue, lerp2(firstInner, secondInner, ffMin, ffMax, fsMin, fsMax), lerp2(firstInner, secondInner, sfMin, sfMax, ssMin, ssMax));
+		return this.lerp(outerValue, this.lerp2(firstInner, secondInner, ffMin, ffMax, fsMin, fsMax), lerp2(firstInner, secondInner, sfMin, sfMax, ssMin, ssMax));
 	}
 	//endregion
 }
