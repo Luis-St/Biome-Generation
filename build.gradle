@@ -6,7 +6,7 @@ plugins {
 repositories {
 	mavenCentral()
 	maven {
-		url uri("${projectDir}/maven/repositories")
+		url "https://maven.luis-st.net/libraries"
 	}
 }
 
@@ -31,13 +31,6 @@ dependencies {
 	implementation "net.sf.jopt-simple:jopt-simple:${JoptSimple}" // Startup
 	implementation "org.jetbrains:annotations:${JetBrainsAnnotations}" // Annotations
 	implementation "it.unimi.dsi:fastutil:${UnimiFastutil}" // Utility
-	// Test
-	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
-	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
-}
-
-test {
-	useJUnitPlatform()
 }
 
 tasks.register("debugRun", JavaExec) {
