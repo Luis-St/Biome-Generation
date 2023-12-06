@@ -1,29 +1,100 @@
 package net.luis.run;
 
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import net.luis.biome.*;
-import net.luis.noise.Noises;
-import net.luis.noise.color.NoiseColors;
-import net.luis.noise.generator.NormalNoise;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.luis.fxutils.helper.EventHandlers;
+import net.luis.ui.Fonts;
+import net.luis.utils.annotation.AutoInitialize;
+import net.luis.utils.logging.*;
+import net.luis.utils.util.unsafe.classpath.ClassPathUtils;
+import org.apache.logging.log4j.*;
+import org.jetbrains.annotations.NotNull;
 
 public class FxRun extends Application {
 	
 	public static final Logger LOGGER = LogManager.getLogger();
-	protected int x;
-	protected int z;
-	protected double scale;
-
+	private int width;
+	private int height;
+	/*	protected double scale;*/
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
 	@Override
+	public void init() throws Exception {
+		this.width = 1000;
+		this.height = 1000;
+	}
+	
+	@Override
+	public void start(@NotNull Stage stage) {
+		double gridSize = 100.0;
+		stage.setScene(this.makeUI(gridSize));
+		stage.setTitle("Biome Noise");
+		stage.show();
+	}
+	
+	private @NotNull Scene makeUI(double gridSize) {
+		int x = (int) Math.ceil(this.width / gridSize);
+		int y = (int) Math.ceil(this.height / gridSize);
+		StackPane pane = new StackPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.getChildren().add(this.makeGrid(x, y, gridSize));
+		pane.getChildren().add(this.makeUserInteractions());
+		return new Scene(pane, this.width, this.height);
+	}
+	
+	private @NotNull Pane makeUserInteractions() {
+		BorderPane pane = new BorderPane();
+		Button btn = new Button("\uf0c9");
+		btn.setFont(Font.font(Fonts.FA_SOLID.getFamily(), 25));
+		btn.setBackground(null);
+		btn.setOnAction(EventHandlers.create(() -> {
+			System.out.println("Hello World!");
+		}));
+		pane.setTop(btn);
+		return pane;
+	}
+	
+	private @NotNull GridPane makeGrid(int x, int y, double size) {
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+		for (int i = 0; i < x; i++) {
+			for (int j = 1; j < y * 2; j++) {
+				Rectangle rectangle;
+				if (j % 2 == 0) {
+					rectangle = new Rectangle(size, 2);
+					rectangle.setFill(Color.BLACK);
+				} else {
+					rectangle = new Rectangle(size, size);
+					rectangle.setFill(Color.GREENYELLOW);
+				}
+				grid.add(rectangle, i, j);
+			}
+			if (i == 0) {
+				continue;
+			}
+			for (int j = 1; j < y * 2 + 1; j += 2) {
+				Rectangle rectangle = new Rectangle(2, size);
+				rectangle.setFill(Color.BLACK);
+				grid.add(rectangle, i, j);
+			}
+		}
+		return grid;
+	}
+	
+	/*	@Override
 	public void init() throws Exception {
 		this.x = 1000;
 		this.z = 1000;
@@ -42,12 +113,12 @@ public class FxRun extends Application {
 		stage.setScene(new Scene(group, this.x, this.z));
 		stage.setTitle("Biome Noise");
 		stage.show();
-	}
+	}*/
 
-//	protected Climate.Target target(int x, int z) {
-//		return Climate.Target.of(Noises.TEMPERATURE.getValue(x * this.scale, z * this.scale), Noises.HUMIDITY.getValue(x * 0.0625, z * 0.0625) * 2.5, Noises.CONTINENTALNESS.getValue(x * this.scale, z * this.scale) * 2.25,
-//			Noises.EROSION.getValue(x * this.scale, z * this.scale));
-//	}
+/*	protected Climate.Target target(int x, int z) {
+		return Climate.Target.of(Noises.TEMPERATURE.getValue(x * this.scale, z * this.scale), Noises.HUMIDITY.getValue(x * 0.0625, z * 0.0625) * 2.5, Noises.CONTINENTALNESS.getValue(x * this.scale, z * this.scale) * 2.25,
+			Noises.EROSION.getValue(x * this.scale, z * this.scale));
+	}
 	
 	protected double temperature(double x, double z) {
 		return this.shiftInBounds(Noises.TEMPERATURE, Noises.TEMPERATURE.getValue(x * this.scale, z * this.scale));
@@ -83,7 +154,7 @@ public class FxRun extends Application {
 	
 	private double shiftInBounds(NormalNoise noise, double value) {
 		return (((value + noise.max()) / (noise.max() + noise.max())) * 2.0) - 1.0;
-	}
+	}*/
 
 //	protected Color river(double x, double z) {
 //		Noise riverNoise = NormalNoise.create(new LegacyRandomSource(System.currentTimeMillis()), -2, 1.0, 1.0, 2.0, 2.0);
@@ -93,4 +164,8 @@ public class FxRun extends Application {
 //		}
 //		return noise == -1 ? new Color(0.0, 0.0, 1.0, 1.0) : new Color(1.0, 1.0, 0.0, 1.0);
 //	}
+	
+	static {
+		Fonts.initialize();
+	}
 }
