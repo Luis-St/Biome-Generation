@@ -1,8 +1,6 @@
 package net.luis.run;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,14 +8,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import net.luis.fxutils.helper.EventHandlers;
 import net.luis.ui.Fonts;
-import net.luis.utils.annotation.AutoInitialize;
-import net.luis.utils.logging.*;
-import net.luis.utils.util.unsafe.classpath.ClassPathUtils;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 public class FxRun extends Application {
@@ -32,7 +27,7 @@ public class FxRun extends Application {
 	}
 	
 	@Override
-	public void init() throws Exception {
+	public void init() {
 		this.width = 1000;
 		this.height = 1000;
 	}
