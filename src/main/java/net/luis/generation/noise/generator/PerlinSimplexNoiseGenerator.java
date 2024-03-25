@@ -1,24 +1,27 @@
-package net.luis.noise.generator;
+package net.luis.generation.noise.generator;
 
 import it.unimi.dsi.fastutil.ints.IntRBTreeSet;
 import it.unimi.dsi.fastutil.ints.IntSortedSet;
-import net.luis.noise.Noise;
-import net.luis.util.random.*;
+import net.luis.generation.noise.random.*;
 import net.luis.utils.annotation.Ignored;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
-public class PerlinSimplexNoise implements Noise {
+public class PerlinSimplexNoiseGenerator implements NoiseGenerator {
 	
-	private final SimplexNoise[] noiseLevels;
+	private final SimplexNoiseGenerator[] noiseLevels;
 	private final double highestFreqValueFactor;
 	private final double highestFreqInputFactor;
 	
-	public PerlinSimplexNoise(RandomSource source, List<Integer> octaves) {
-		this(source, new IntRBTreeSet(octaves));
+	public PerlinSimplexNoiseGenerator(@NotNull RandomSource source, @NotNull List<Integer> octaves) {
+		this(source, new IntRBTreeSet(Objects.requireNonNull(octaves, "Octaves must not be null")));
 	}
 	
-	private PerlinSimplexNoise(RandomSource source, IntSortedSet octaves) {
+	private PerlinSimplexNoiseGenerator(@NotNull RandomSource source, @NotNull IntSortedSet octaves) {
+		Objects.requireNonNull(source, "Source must not be null");
+		Objects.requireNonNull(octaves, "Octaves must not be null");
 		if (octaves.isEmpty()) {
 			throw new IllegalArgumentException("Need some octaves!");
 		} else {
@@ -28,24 +31,24 @@ public class PerlinSimplexNoise implements Noise {
 			if (octaveCount < 1) {
 				throw new IllegalArgumentException("Total number of octaves needs to be >= 1");
 			} else {
-				SimplexNoise simplexnoise = new SimplexNoise(source);
-				this.noiseLevels = new SimplexNoise[octaveCount];
+				SimplexNoiseGenerator simplexNoise = new SimplexNoiseGenerator(source);
+				this.noiseLevels = new SimplexNoiseGenerator[octaveCount];
 				if (last >= 0 && last < octaveCount && octaves.contains(0)) {
-					this.noiseLevels[last] = simplexnoise;
+					this.noiseLevels[last] = simplexNoise;
 				}
 				for (int i = last + 1; i < octaveCount; ++i) {
 					if (i >= 0 && octaves.contains(last - i)) {
-						this.noiseLevels[i] = new SimplexNoise(source);
+						this.noiseLevels[i] = new SimplexNoiseGenerator(source);
 					} else {
 						source.consumeCount(262);
 					}
 				}
 				if (last > 0) {
-					long noiseSeed = (long) (simplexnoise.getValue(simplexnoise.xo, simplexnoise.yo, simplexnoise.zo) * 9.223372E18);
-					RandomSource rng = new WorldgenRandom(new LegacyRandomSource(noiseSeed));
+					long noiseSeed = (long) (simplexNoise.getValue(simplexNoise.xo, simplexNoise.yo, simplexNoise.zo) * 9.223372E18);
+					RandomSource rng = new WorldgenRandom(noiseSeed);
 					for (int i = last - 1; i >= 0; --i) {
 						if (i < octaveCount && octaves.contains(last - i)) {
-							this.noiseLevels[i] = new SimplexNoise(rng);
+							this.noiseLevels[i] = new SimplexNoiseGenerator(rng);
 						} else {
 							rng.consumeCount(262);
 						}
@@ -71,7 +74,7 @@ public class PerlinSimplexNoise implements Noise {
 		double result = 0.0;
 		double inputFactor = this.highestFreqInputFactor;
 		double valueFactor = this.highestFreqValueFactor;
-		for (SimplexNoise simplexNoise : this.noiseLevels) {
+		for (SimplexNoiseGenerator simplexNoise : this.noiseLevels) {
 			if (simplexNoise != null) {
 				result += simplexNoise.getValue(x * inputFactor + (simplex ? simplexNoise.xo : 0.0), z * inputFactor + (simplex ? simplexNoise.yo : 0.0)) * valueFactor;
 			}

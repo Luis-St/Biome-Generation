@@ -1,23 +1,26 @@
-package net.luis.noise.generator;
+package net.luis.generation.noise.generator;
 
-import net.luis.noise.Noise;
-import net.luis.util.random.RandomSource;
+import net.luis.generation.noise.random.RandomSource;
+import org.jetbrains.annotations.NotNull;
 
-public class SimplexNoise implements Noise {
+import java.util.Objects;
+
+public class SimplexNoiseGenerator implements NoiseGenerator {
 	
 	private static final double SQRT_3 = 1.7320508075688772;
 	private static final double F2 = 0.5 * (SQRT_3 - 1.0);
 	private static final double G2 = (3.0 - SQRT_3) / 6.0;
 	protected static final int[][] GRADIENT = {
-		{1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}, {1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1},
-		{0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}, {1, 1, 0}, {0, -1, 1}, {-1, 1, 0}, {0, -1, -1}
+		{ 1, 1, 0 }, { -1, 1, 0 }, { 1, -1, 0 }, { -1, -1, 0 }, { 1, 0, 1 }, { -1, 0, 1 }, { 1, 0, -1 }, { -1, 0, -1 },
+		{ 0, 1, 1 }, { 0, -1, 1 }, { 0, 1, -1 }, { 0, -1, -1 }, { 1, 1, 0 }, { 0, -1, 1 }, { -1, 1, 0 }, { 0, -1, -1 }
 	};
 	private final int[] points = new int[512];
 	public final double xo;
 	public final double yo;
 	public final double zo;
 	
-	public SimplexNoise(RandomSource rng) {
+	public SimplexNoiseGenerator(@NotNull RandomSource rng) {
+		Objects.requireNonNull(rng, "Random source must not be null");
 		this.xo = rng.nextDouble() * 256.0;
 		this.yo = rng.nextDouble() * 256.0;
 		this.zo = rng.nextDouble() * 256.0;
@@ -30,7 +33,7 @@ public class SimplexNoise implements Noise {
 		}
 	}
 	
-	protected static double dot(int[] values, double x, double y, double z) {
+	protected static double dot(int @NotNull [] values, double x, double y, double z) {
 		return values[0] * x + values[1] * y + values[2] * z;
 	}
 	

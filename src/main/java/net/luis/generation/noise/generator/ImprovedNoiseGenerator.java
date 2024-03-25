@@ -1,16 +1,22 @@
-package net.luis.noise.generator;
+package net.luis.generation.noise.generator;
 
-import net.luis.noise.Noise;
-import net.luis.util.random.RandomSource;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.luis.generation.noise.random.RandomSource;
+import net.luis.generation.noise.random.WorldgenRandom;
+import org.jetbrains.annotations.NotNull;
 
-public final class ImprovedNoise implements Noise {
+import java.util.Objects;
+
+public final class ImprovedNoiseGenerator implements NoiseGenerator {
 	
 	private final byte[] points;
 	public final double xo;
 	public final double yo;
 	public final double zo;
 	
-	public ImprovedNoise(RandomSource rng) {
+	public ImprovedNoiseGenerator(@NotNull RandomSource rng) {
+		Objects.requireNonNull(rng, "Random source must not be null");
 		this.xo = rng.nextDouble() * 256.0;
 		this.yo = rng.nextDouble() * 256.0;
 		this.zo = rng.nextDouble() * 256.0;
@@ -84,7 +90,7 @@ public final class ImprovedNoise implements Noise {
 	
 	//region Helper methods
 	private double gradDot(int i, double x, double y, double z) {
-		return SimplexNoise.dot(SimplexNoise.GRADIENT[i & 15], x, y, z);
+		return SimplexNoiseGenerator.dot(SimplexNoiseGenerator.GRADIENT[i & 15], x, y, z);
 	}
 	
 	private int point(int value) {
@@ -93,10 +99,6 @@ public final class ImprovedNoise implements Noise {
 	
 	private double smoothStep(double value) {
 		return value * value * value * (value * (value * 6.0 - 15.0) + 10.0);
-	}
-	
-	private double smoothStepDerivative(double value) {
-		return 30.0 * value * value * (value - 1.0) * (value - 1.0);
 	}
 	
 	private double lerp(double value, double min, double max) {
@@ -108,7 +110,7 @@ public final class ImprovedNoise implements Noise {
 	}
 	
 	private double lerp3(double firstInner, double secondInner, double outerValue, double ffMin, double ffMax, double fsMin, double fsMax, double sfMin, double sfMax, double ssMin, double ssMax) {
-		return this.lerp(outerValue, this.lerp2(firstInner, secondInner, ffMin, ffMax, fsMin, fsMax), lerp2(firstInner, secondInner, sfMin, sfMax, ssMin, ssMax));
+		return this.lerp(outerValue, this.lerp2(firstInner, secondInner, ffMin, ffMax, fsMin, fsMax), this.lerp2(firstInner, secondInner, sfMin, sfMax, ssMin, ssMax));
 	}
 	//endregion
 }
