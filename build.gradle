@@ -8,6 +8,9 @@ repositories {
 	maven {
 		url "https://maven.luis-st.net/libraries"
 	}
+	maven {
+		url "https://libraries.minecraft.net"
+	}
 }
 
 javafx {
@@ -22,43 +25,48 @@ dependencies {
 	implementation "net.luis:FxUtils:${FxUtils}" // Fx Utility
 	// Google
 	implementation "com.google.guava:guava:${GoogleGuava}" // Utility
+	implementation "com.google.code.gson:gson:${GoogleGson}" // Json
 	// Apache
 	implementation "org.apache.logging.log4j:log4j-api:${Log4jAPI}" // Logging
 	implementation "org.apache.logging.log4j:log4j-core:${Log4jCore}" // Logging
 	implementation "org.apache.commons:commons-lang3:${ApacheLang}" // Utility
 	implementation "commons-io:commons-io:${ApacheIO}" // IO
 	// Other
-	implementation "net.sf.jopt-simple:jopt-simple:${JoptSimple}" // Startup
+	implementation "net.sf.jopt-simple:jopt-simple:${JOptSimple}" // Startup
 	implementation "org.jetbrains:annotations:${JetBrainsAnnotations}" // Annotations
 	implementation "it.unimi.dsi:fastutil:${UnimiFastutil}" // Utility
+	implementation "com.mojang:datafixerupper:${MojangCodec}"// Console
 }
 
-tasks.register("debugRun", JavaExec) {
+tasks.register("displayHelp", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.run.DebugRun")
+	getMainClass().set("net.luis.generation.Main")
 	classpath = sourceSets.main.runtimeClasspath
+	args("--help")
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
-tasks.register("fxRun", JavaExec) {
+tasks.register("runUi", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.run.FxRun")
+	getMainClass().set("net.luis.generation.Main")
 	classpath = sourceSets.main.runtimeClasspath
+	args("--ui", "--dev", "--config", file("src/main/resources/config.json"))
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
-tasks.register("testRun", JavaExec) {
+tasks.register("runImage", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.run.TestRun")
+	getMainClass().set("net.luis.generation.Main")
 	classpath = sourceSets.main.runtimeClasspath
+	args("--ui", "--dev", "--config", file("src/main/resources/config.json"), "--output", System.getProperty("user.home") + "/Desktop", "--size", 10000)
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
-tasks.register("imageRun", JavaExec) {
+tasks.register("generateData", JavaExec) {
 	group = "runs"
-	getMainClass().set("net.luis.run.ImageRun")
+	getMainClass().set("net.luis.generation.Main")
 	classpath = sourceSets.main.runtimeClasspath
-	args("10000")
+	args("--data", "--dev", "--config", file("src/main/resources/config.json"), "--output", file("src/main/generated/"))
 	jvmArgs("--module-path", classpath.asPath, "--add-modules", "javafx.controls")
 }
 
