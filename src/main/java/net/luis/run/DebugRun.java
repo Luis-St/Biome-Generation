@@ -22,7 +22,7 @@ public class DebugRun extends Application {
 	public static final Logger LOGGER = LogManager.getLogger();
 	protected int x;
 	protected int z;
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -43,7 +43,7 @@ public class DebugRun extends Application {
 			}
 		}
 		stage.setScene(new Scene(group, this.x, this.z));
-		stage.setTitle("Biome Noise");
+		stage.setTitle("Biome NoiseGenerator");
 		stage.show();
 	}
 }

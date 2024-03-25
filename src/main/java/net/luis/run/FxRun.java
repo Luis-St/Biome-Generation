@@ -36,7 +36,7 @@ public class FxRun extends Application {
 	public void start(@NotNull Stage stage) {
 		double gridSize = 100.0;
 		stage.setScene(this.makeUI(gridSize));
-		stage.setTitle("Biome Noise");
+		stage.setTitle("Biome NoiseGenerator");
 		stage.show();
 	}
 	
@@ -106,7 +106,7 @@ public class FxRun extends Application {
 			}
 		}
 		stage.setScene(new Scene(group, this.x, this.z));
-		stage.setTitle("Biome Noise");
+		stage.setTitle("Biome NoiseGenerator");
 		stage.show();
 	}*/
 
@@ -147,12 +147,12 @@ public class FxRun extends Application {
 		return NoiseColors.erosion(Noises.EROSION.getValue(x * this.scale, z * this.scale));
 	}
 	
-	private double shiftInBounds(NormalNoise noise, double value) {
+	private double shiftInBounds(NormalNoiseGenerator noise, double value) {
 		return (((value + noise.max()) / (noise.max() + noise.max())) * 2.0) - 1.0;
 	}*/
 
 //	protected Color river(double x, double z) {
-//		Noise riverNoise = NormalNoise.create(new LegacyRandomSource(System.currentTimeMillis()), -2, 1.0, 1.0, 2.0, 2.0);
+//		NoiseGenerator riverNoise = NormalNoiseGenerator.create(new LegacyRandomSource(System.currentTimeMillis()), -2, 1.0, 1.0, 2.0, 2.0);
 //		long noise = Math.round(riverNoise.getValue(x * this.scale, z * this.scale) * 10); // TEST: higher multiplier
 //		if (noise == 1) {
 //			return new Color(0.0, 1.0, 0.0, 1.0);
