@@ -38,6 +38,11 @@ public class SimplexNoiseGenerator implements NoiseGenerator {
 	}
 	
 	@Override
+	public @NotNull NoiseGeneratorType getType() {
+		return NoiseGeneratorType.SIMPLEX;
+	}
+	
+	@Override
 	public double getValue(double x, double z) {
 		double d0 = (x + z) * F2;
 		int i = (int) Math.floor(x + d0);

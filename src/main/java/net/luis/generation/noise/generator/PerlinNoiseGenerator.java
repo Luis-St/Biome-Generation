@@ -120,6 +120,11 @@ public class PerlinNoiseGenerator implements NoiseGenerator {
 	//endregion
 	
 	@Override
+	public @NotNull NoiseGeneratorType getType() {
+		return NoiseGeneratorType.PERLIN;
+	}
+	
+	@Override
 	public double getValue(double x, double y, double z) {
 		return this.getValue(x, y, z, 0.0D, 0.0D, false);
 	}

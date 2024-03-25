@@ -36,6 +36,11 @@ public class NormalNoiseGenerator implements NoiseGenerator {
 	}
 	
 	@Override
+	public @NotNull NoiseGeneratorType getType() {
+		return NoiseGeneratorType.NORMAL;
+	}
+	
+	@Override
 	public double getValue(double x, double z) {
 		return this.getValue(x, 0.0, z);
 	}

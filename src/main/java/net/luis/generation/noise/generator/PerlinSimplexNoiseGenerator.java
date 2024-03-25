@@ -61,6 +61,11 @@ public class PerlinSimplexNoiseGenerator implements NoiseGenerator {
 	}
 	
 	@Override
+	public @NotNull NoiseGeneratorType getType() {
+		return NoiseGeneratorType.PERLIN_SIMPLEX;
+	}
+	
+	@Override
 	public double getValue(double x, double z) {
 		return this.getValue(x, z, true);
 	}

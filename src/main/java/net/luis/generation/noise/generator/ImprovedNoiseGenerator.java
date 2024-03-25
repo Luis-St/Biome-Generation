@@ -33,6 +33,11 @@ public final class ImprovedNoiseGenerator implements NoiseGenerator {
 	}
 	
 	@Override
+	public @NotNull NoiseGeneratorType getType() {
+		return NoiseGeneratorType.IMPROVED;
+	}
+	
+	@Override
 	public double getValue(double x, double z) {
 		return this.noise(x, 0.0, z, 0.0, 0.0);
 	}
