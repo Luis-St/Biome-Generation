@@ -1,0 +1,14 @@
+{
+	"resource_folder": "resources",
+	"ui": {
+		"width": 800,
+		"height": 600
+	},
+	"data": {
+		"output_folder": "output"
+	},
+	"image": {
+		"output_folder": "output",
+		"size": 10000
+	}
+}
