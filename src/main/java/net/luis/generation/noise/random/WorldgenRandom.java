@@ -1,5 +1,9 @@
-package net.luis.util.random;
+package net.luis.generation.noise.random;
 
+import com.mojang.serialization.Codec;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 import java.util.Random;
 
 public class WorldgenRandom extends Random implements RandomSource {
@@ -11,20 +15,20 @@ public class WorldgenRandom extends Random implements RandomSource {
 		this(new LegacyRandomSource(seed));
 	}
 	
-	public WorldgenRandom(RandomSource rng) {
+	public WorldgenRandom(@NotNull RandomSource rng) {
 		super(0L);
-		this.rng = rng;
+		this.rng = Objects.requireNonNull(rng, "Random source must not be null");
 	}
 	
 	public int getCount() {
 		return this.count;
 	}
 	
-	public RandomSource fork() {
+	public @NotNull RandomSource fork() {
 		return this.rng.fork();
 	}
 	
-	public PositionalRandomFactory forkPositional() {
+	public @NotNull PositionalRandomFactory forkPositional() {
 		return this.rng.forkPositional();
 	}
 	

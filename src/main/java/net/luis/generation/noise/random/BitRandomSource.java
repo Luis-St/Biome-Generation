@@ -1,4 +1,4 @@
-package net.luis.util.random;
+package net.luis.generation.noise.random;
 
 public interface BitRandomSource extends RandomSource {
 	

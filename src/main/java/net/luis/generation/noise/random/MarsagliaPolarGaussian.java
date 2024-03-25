@@ -1,4 +1,8 @@
-package net.luis.util.random;
+package net.luis.generation.noise.random;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MarsagliaPolarGaussian {
 	
@@ -6,8 +10,8 @@ public class MarsagliaPolarGaussian {
 	private double nextNextGaussian;
 	private boolean haveNextNextGaussian;
 	
-	public MarsagliaPolarGaussian(RandomSource rng) {
-		this.randomSource = rng;
+	public MarsagliaPolarGaussian(@NotNull RandomSource rng) {
+		this.randomSource = Objects.requireNonNull(rng, "Random source must not be null");
 	}
 	
 	public void reset() {

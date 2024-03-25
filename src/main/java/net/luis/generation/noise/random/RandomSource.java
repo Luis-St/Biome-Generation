@@ -1,10 +1,12 @@
-package net.luis.util.random;
+package net.luis.generation.noise.random;
+
+import org.jetbrains.annotations.NotNull;
 
 public interface RandomSource {
 	
-	RandomSource fork();
+	@NotNull RandomSource fork();
 	
-	PositionalRandomFactory forkPositional();
+	@NotNull PositionalRandomFactory forkPositional();
 	
 	void setSeed(long seed);
 	
